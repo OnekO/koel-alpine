@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  koel:
+    build: .  
+    container_name: "koel"
+    environment:
+    - VIRTUAL_HOST=koel.lan
+    ports:
+    - "12880:80"
+    labels:
+    - "traefik.frontend.passHostHeader=true"
+    - "traefik.docker.network=proxied_traefik"
+    - "traefik.frontend.rule=Host:koel.lan"
+    - "traefik.backend.loadbalancer.sticky=true"
+    - "traefik.frontend.whiteList.useXForwardedFor=true"
+
+
+networks:
+  default:
+    external:
+      name: proxied_traefik
